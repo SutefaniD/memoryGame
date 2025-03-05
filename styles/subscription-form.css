@@ -1,0 +1,167 @@
+/************************************************************
+        Page S'inscrire
+************************************************************/
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+label {
+    margin-top: 10px;
+    font-weight: bold;
+    color: white;
+    /*#555;*/
+    display: block;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background: #222;
+    color: white;
+}
+
+input::placeholder {
+    color: #bbb;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* image dans input */
+.input-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.img-container {
+    position: absolute;
+    right: 10px; /* Ajuste la position de l'image à droite de l'input */
+    top: 50%;
+    transform: translateY(-50%); /* Centre l'image verticalement */
+    width: 20px; /* Ajuste la taille de l'image */
+}
+
+
+p {
+    font-size: 12px;
+    color: #ccc;
+}
+
+
+/************************************************************
+        barre de force du mot de passe
+************************************************************/
+#pwd {
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.strength-container {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bars {
+    display: flex;
+    gap: 3px; /* espacement réduit entre les barres */
+    width: 100%; /* assure que les barres occupent la largeur */
+}
+
+.bar {
+    height: 6px;
+    border-radius: 3px;
+    background-color: lightgray;
+    display: none; /* Caché par défaut */
+    width: 33%; /* chaque barre prend 1/3 de la largeur */
+}
+
+#orange {
+    background-color: orange;
+}
+
+#yellow {
+    background-color: yellow;
+}
+
+#green {
+    background-color: green;
+}
+
+.visible {
+    display: block; /* affiche la barre quand elle est visible */
+}
+
+/* Style des textes sous les barres */
+.texts {
+    display: flex;
+    /* justify-content: space-between; */
+    width: 100%;
+    max-width: 400px; /* Aligné avec la largeur max du champ */
+    margin-top: 3px;
+    padding: 0 5px;
+}
+
+.strength-text {
+    font-size: 0.9rem;
+    text-align: center;
+    /* flex: 1; */
+    width: 33%;
+    display: none; /* Caché par défaut */
+}
+
+/* #orange-text {
+    color: orange;
+}
+
+#yellow-text {
+    color: yellow;
+}
+
+#green-text {
+    color: green;
+} */
+
+
+/************************************************************
+        Boutons
+************************************************************/
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    width: 100%;
+}
+
+input[type="submit"],
+input[type="reset"] {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: grey;
+    color: white;
+    margin: 5px;
+}
+
+
+input[type="submit"]:hover,
+input[type="reset"]:hover {
+    background-color: #555;
+}

@@ -7,6 +7,7 @@
     <title>S'inscrire</title>
     <script src="script.js"></script>
     <link rel="stylesheet" href="styles/style_ss-bootstrap.css">
+    <link rel="stylesheet" href="styles/subscription-form.css">
 </head>
 
 <body>
@@ -44,8 +45,8 @@
             <div class="input-container">
                 <input type="text" id="userName" name="userName" placeholder="3 caractères minimum" required
                     pattern="[a-zA-Z]{3,}" minlength=3>
-                    <p></p>
-                    <div class="img-container"></div>
+                <p></p>
+                <div class="img-container"></div>
             </div>
 
 
@@ -57,21 +58,35 @@
             </div>
 
 
-            <label for="pwd">Mot de passe*</label>
             <div class="input-container">
+                <label for="pwd">Mot de passe*</label>
                 <input type="password" id="pwd" name="pwd" placeholder="Votre mot de passe" required>
-                <div class="img-container"></div>               
+                <div class="img-container"></div>
+
+                <p>Au moins un symbole, un chiffre, ainsi que 6 caractères minimum.</p>
+                <div class="strength-container">
+                    <div class="bars">
+                        <div id="orange" class="bar"></div>
+                        <div id="yellow" class="bar"></div>
+                        <div id="green" class="bar"></div>
+                    </div>
+                    <div class="texts">
+                        <div id="orange-text" class="strength-text"></div>
+                        <div id="yellow-text" class="strength-text"></div>
+                        <div id="green-text" class="strength-text"></div>
+                    </div>
+                </div>
             </div>
-            <p>Au moins un symbole, un chiffre, ainsi que 6 caractères minimum.</p>
-            <div id="orange" class="strength-bar"><p id="weak"></p></div>
-            <div id="yellow" class="strength-bar"><p id="medium"></p></div>
-            <div id="green" class="strength-bar"><p id="strong"></p></div>
+
+
 
             <label for="pwd-check">Confirmez le mot de passe*</label>
             <div class="input-container">
                 <input type="password" id="pwd-check" name="pwd-check" placeholder="Confirmez le mot de passe" required>
-                <div class="img-container"></div>
+                <div id="same" class="img-container"></div>
             </div>
+
+
             <div class="buttons">
                 <input type="submit" id="submit-btn" value="Création du compte">
                 <input type="reset" id="reset-btn" value="Annuler">
