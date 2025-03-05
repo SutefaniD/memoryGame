@@ -1,9 +1,9 @@
 /************************************************************
         Function to check the length of the user name
 ************************************************************/
-function checkNameLength() {
+function checkNameLength(event) {
 
-    const elementInputContainer = this.closest(".input-container");   /* closest to id=userName */
+    const elementInputContainer = event.target.closest(".input-container");   /* closest to id=userName */
     const imgContainer = elementInputContainer.querySelector(".img-container");
     const newP = document.createElement('p');
 
@@ -20,8 +20,8 @@ function checkNameLength() {
     }
 
 
-    if (this.value.length < 3) {
-
+    // Check name length
+    if (event.target.value.length < 3) {
         let img = document.createElement('img');
         img.src = 'assets/error.svg';
         imgContainer.appendChild(img);
@@ -39,7 +39,10 @@ function checkNameLength() {
         if (existingP) {
             existingP.remove();
         }
+
     }
+    validateForm();  // Appel à validateForm() après chaque modification
+
 }
 
 /************************************************************
@@ -53,11 +56,11 @@ function checkEmail(email) {
 
 }
 
-function mailValidity() {
-    const elementInputContainer = this.closest(".input-container");   /* closest to id=userMail */
+function mailValidity(event) {
+    const elementInputContainer = event.target.closest(".input-container");   /* closest to id=userMail */
     const imgContainer = elementInputContainer.querySelector(".img-container");
     const p = document.getElementById('mailMsg');
-    const email = this.value.trim(); /* récupérer la valeur de l'input mail */
+    const email = event.target.value.trim(); /* récupérer la valeur de l'input mail */
 
     p.innerText = "Rentrez un email valide";
     p.style.color = "red";
@@ -74,12 +77,15 @@ function mailValidity() {
         imgContainer.appendChild(img);
         p.hidden = false;
 
+
     } else {
         let img = document.createElement('img');
         img.src = 'assets/check.svg';
         imgContainer.appendChild(img);
         p.hidden = true;
+
     }
+    validateForm();  // Appel à validateForm() après chaque modification
 }
 
 /************************************************************
@@ -117,6 +123,7 @@ function pwdValidity(event) {
         imgContainer.appendChild(img);
 
     }
+    validateForm();  // Appel à validateForm() après chaque modification
 }
 
 
@@ -218,6 +225,7 @@ function recheckPwd() {
         let img = document.createElement('img');
         img.src = 'assets/check.svg';
         imgContainer.appendChild(img);
+        return true;
 
 
 
@@ -226,9 +234,97 @@ function recheckPwd() {
         let img = document.createElement('img');
         img.src = 'assets/error.svg';
         imgContainer.appendChild(img);
+        return false;
     }
+    validateForm();  // Appel à validateForm() après chaque modification
 
 }
+
+
+
+/************************************************************
+        Function to validate the form
+************************************************************/
+function validateForm() {
+    const userName = document.getElementById('userName').value;
+    const userMail = document.getElementById('userMail').value;
+    const userPwd = document.getElementById('pwd').value;
+
+    const isNameValid = userName.length >= 3;
+    const isMailValid = checkEmail(userMail);
+    const isPwdValid = checkPassword(userPwd) && recheckPwd();
+
+    const submitBtn = document.getElementById('submit-btn');
+
+    if (isNameValid && isMailValid && isPwdValid) {
+        console.log('nom valide', userName);
+        console.log('mail valide', userMail);
+        console.log('mdp valide', userPwd);
+        submitBtn.disabled = false;
+        submitBtn.style.backgroundColor = '';
+    } else {
+        console.log("erreur: nom non valide")
+        submitBtn.disabled = true;   // Désactive le bouton
+
+    }
+}
+
+
+/************************************************************
+        Function to register data in localStorage
+************************************************************/
+
+function registerUser() {
+    const userName = document.getElementById('userName').value;
+    const userMail = document.getElementById('userMail').value;
+    const userPwd = document.getElementById('pwd').value;
+
+    // Créer un objet pour un nouvel utilisateur
+    const newUser = {
+        userName: userName,
+        userMail: userMail,
+        userPwd: userPwd
+    };
+
+    // Récupérer la liste des utilisateurs existants du localStorage
+    let usersArray = localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : [];  // load any pre-existing items in localStorage; if there aren't any, create an empty array
+
+
+
+checkNewUserUnicity(newUser);
+
+
+
+    // Ajouter le nouvel utilisateur au tableau
+    usersArray.push(newUser);
+
+    // Sérialiser le tableau des utilisateurs en JSON et l'enregistrer dans le localStorage
+    localStorage.setItem('users', JSON.stringify(usersArray));
+
+    // Affichage console
+    console.log('Nouvel utilisateur enregistré:', newUser);
+    console.log('Liste des utilisateurs:', usersArray);
+
+}
+
+/* récupérer le tableau d'utilisateurs du localStorage */
+function getUsers() {
+    const usersArray = localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : [];
+
+    console.log('Liste des utilisateurs enregistrés:', usersArray);
+}
+
+/* Vérifier que la personne qui s'inscrit n'a pas déjà utilisé un email ou un nom présent dans la liste des utilisateurs déjà créés. */
+function checkNewUserUnicity(newUser) {
+    const users = getUsers();
+    for (const user of users) {
+        console.log(user)
+        
+    }
+}
+
+
+
 
 
 /************************************************************
@@ -236,13 +332,24 @@ function recheckPwd() {
 ************************************************************/
 
 function init() {
-    document.getElementById("userName").addEventListener("input", checkNameLength);
-    document.getElementById("userMail").addEventListener("input", mailValidity);
+    document.getElementById("userName").addEventListener("input", function (event) {
+        checkNameLength(event);  // Vérification du nom
+        validateForm();  // Vérification globale du formulaire
+    });
+    document.getElementById("userMail").addEventListener("input", function (event) {
+        mailValidity(event);  // Vérification de l'email
+        validateForm();  // Vérification globale du formulaire
+    });
     document.getElementById("pwd").addEventListener("input", function (event) {
         pwdValidity(event);
         pwdHelp(event);
+        validateForm();      // Vérification globale du formulaire
     });
-    document.getElementById('pwd-check').addEventListener('input', recheckPwd);
+    document.getElementById('pwd-check').addEventListener('input', function (event) {
+        recheckPwd(event);  // Vérification que les mots de passe correspondent
+        validateForm();     // Vérification globale du formulaire
+    });
+    document.getElementById('submit-btn').addEventListener('click', registerUser);
 
 }
 

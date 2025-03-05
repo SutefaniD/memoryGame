@@ -165,3 +165,10 @@ input[type="submit"]:hover,
 input[type="reset"]:hover {
     background-color: #555;
 }
+
+#submit-btn:disabled {
+
+    background-color: #d3d3d3;  /* Couleur grise */
+    cursor: not-allowed;        /* Curseur pour indiquer qu'il est désactivé */
+    
+}
