@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil</title>
+    <script src="scripts/profile.js"></script>
     <link rel="stylesheet" href="styles/style.css">
 </head>
 
@@ -36,7 +37,49 @@
     </header>
     <main>
 
-        <h2>Profil</h2>
+        <section id="userProfile">
+            <h2>Profil</h2>
+            <img id="profile-img" src="" alt="photo de profil">
+        </section>
+
+        <section id="userID">
+
+        </section>
+
+        <section id="memoryOptions">
+            <form action="">
+                <!-- Choix du Memory -->
+                 <label for="memory-selection">Choix du Memory</label>
+                    <select name="memory" id="memory-selection">
+                        <option value="alphabet-scrabble">Alphabet</option>
+                        <option value="animaux">Animaux</option>
+                        <option value="animauxAnimes" selected>Animaux animés</option>
+                        <option value="animauxDomestiques">Animaux domestiques</option>
+                        <option value="chiens">Chiens</option>
+                        <option value="dinosaures">Dinosaures</option>
+                        <option value="dinosauresAvecNom">Dinosaures avec nom</option>
+                        <option value="memory-legume">Légumes</option>
+                        
+                    </select>
+
+                    <section id="img-box"><img id="memory-img" src="assets/animauxAnimes/memory_detail_animaux_animes.png"></section>
+
+                <!-- Taille du Memory -->
+
+                <!-- Bouton -->
+                 <input type="submit" id="registerBtn" value="Enregistrez Option">
+            </form>
+
+
+        </section>
+
+        <section id="pastScores">
+            <h2>Derniers Scores</h2>
+            <!-- Tableau des scores-->
+
+        </section>
+
+
 
 
     </main>

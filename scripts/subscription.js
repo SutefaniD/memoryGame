@@ -257,11 +257,9 @@ function validateForm() {
     const submitBtn = document.getElementById('submit-btn');
 
     if (isNameValid && isMailValid && isPwdValid) {
-        console.log('nom valide', userName);
-        console.log('mail valide', userMail);
-        console.log('mdp valide', userPwd);
         submitBtn.disabled = false;
         submitBtn.style.backgroundColor = '';
+
     } else {
         console.log("erreur: nom non valide")
         submitBtn.disabled = true;   // Désactive le bouton
@@ -271,13 +269,24 @@ function validateForm() {
 
 
 /************************************************************
-        Function to register data in localStorage
+        Function to register data in localStorage 
+        (called when submit button is clicked on)
 ************************************************************/
 
-function registerUser() {
+function registerUser(event) {
+    /* l'objet event contient les infos spécifiques sur l'événement qui se produit:
+     - l'élément qui a déclenché l'événement (ici le bouton)
+     - le type d'événement (clic)
+     - méthodes permettant de contrôler le comportement de l'événement (preventDefault() )
+    */
+
+    // Empêcher la soumission du formulaire si une erreur est présente
+    event.preventDefault(); /* empêche redirection vers la page de connexion */
+
     const userName = document.getElementById('userName').value;
     const userMail = document.getElementById('userMail').value;
     const userPwd = document.getElementById('pwd').value;
+
 
     // Créer un objet pour un nouvel utilisateur
     const newUser = {
@@ -286,14 +295,13 @@ function registerUser() {
         userPwd: userPwd
     };
 
+    // Vérifier si le nouvel utilisateur n'utilise pas un email ou un nom déjà utilisé
+    if (!checkNewUserUnicity(newUser)) {
+        return; // utilisateur ne peut pas être ajouté s'il existe déjà
+    }
+
     // Récupérer la liste des utilisateurs existants du localStorage
     let usersArray = localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : [];  // load any pre-existing items in localStorage; if there aren't any, create an empty array
-
-
-
-checkNewUserUnicity(newUser);
-
-
 
     // Ajouter le nouvel utilisateur au tableau
     usersArray.push(newUser);
@@ -302,28 +310,40 @@ checkNewUserUnicity(newUser);
     localStorage.setItem('users', JSON.stringify(usersArray));
 
     // Affichage console
-    console.log('Nouvel utilisateur enregistré:', newUser);
-    console.log('Liste des utilisateurs:', usersArray);
+    //console.log('Nouvel utilisateur enregistré:', newUser);
+    //console.log('Liste des utilisateurs:', usersArray);
+
+    // rediriger vers la page de connexion après l'enregistrement
+    window.location.href = "connection.html";
 
 }
 
-/* récupérer le tableau d'utilisateurs du localStorage */
-function getUsers() {
-    const usersArray = localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : [];
 
-    console.log('Liste des utilisateurs enregistrés:', usersArray);
-}
 
 /* Vérifier que la personne qui s'inscrit n'a pas déjà utilisé un email ou un nom présent dans la liste des utilisateurs déjà créés. */
 function checkNewUserUnicity(newUser) {
-    const users = getUsers();
-    for (const user of users) {
-        console.log(user)
-        
+
+    // récupérer les utilisateaurs existants dans le localStorage
+    let usersArray = localStorage.getItem("users") ? JSON.parse(localStorage.getItem('users')) : [];
+
+    // vérifier si  l'email ou le nom d'utilisateur existe déjà
+    for (let i = 0; i < usersArray.length; i++) {
+        if (usersArray[i].userName === newUser.userName) {
+            alert(`Le nom ${newUser.userName} existe déjà. Veuillez saisir un nouveau nom.`);
+            document.getElementById('userName').focus();
+            return false;
+        }
+        if (usersArray[i].userMail === newUser.userMail) {
+            alert(`L'email ${newUser.userMail} existe déjà. Veuillez saisir un nouvel email.`);
+            document.getElementById('userMail').focus();
+            return false;
+        }
     }
+    // si tout est ok, on retourne true
+    console.log("utilisateur peut être enregistré");
+    return true;
+
 }
-
-
 
 
 
@@ -351,6 +371,7 @@ function init() {
     });
     document.getElementById('submit-btn').addEventListener('click', registerUser);
 
+   
 }
 
 window.onload = init;
