@@ -1,11 +1,7 @@
-
-
 // // Faire apparitre dynamiquement les cartes
 // // 1. Charger le JSON contenant les infos des cartes
 // // 2. Générer les cartes et les ajouter dans .memory-board
 // // 3. Afficher le recto et le verso des cartes avec des images
-
-
 // quand on clique sur une carte, elle se retourne (face de la carte)
 
 
