@@ -29,7 +29,7 @@ function init() {
     const memoryBoard = document.querySelector(".memory-board");
 
     // Charger le JSON
-    fetch("~/../data.json")
+    fetch("data.json")
         .then((response) => response.json())
         .then((data) => {
             console.log("données chargées :", data);
