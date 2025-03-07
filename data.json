@@ -1,5 +1,50 @@
 {
-    "users" : [
-        { "name" :   "", "mail" : "", "pwd" : ""}
-    ]
+    "alphabet-scrabble": {
+        "label": "Scrabble",
+        "thumbnail": "assets/alphabet-scrabble/memory_detail_scrabble.png",
+        "cardPattern": "assets/alphabet-scrabble/{index}.png",
+        "cardCount": 26
+    },
+    "animaux": {
+        "label": "Animaux",
+        "thumbnail": "assets/animaux/memory_detail_animaux.png",
+        "cardPattern": "assets/animaux/{index}.webp",
+        "cardCount": 28
+    },
+    "animauxAnimes": {
+        "label": "Animaux Animés",
+        "thumbnail": "assets/animaux/memory_detail_animaux_animes.png",
+        "cardPattern": "assets/animauxAnimes/{index}.webp",
+        "cardCount": 8
+    },
+    "animauxdomestiques": {
+        "label": "Animaux Domestiques",
+        "thumbnail": "assets/animauxdomestiques/memory_detail_animaux_domestiques.png",
+        "cardPattern": "assets/animauxdomestiques/{index}.jpg",
+        "cardCount": 10
+    },
+    "chiens": {
+        "label": "Chiens",
+        "thumbnail": "assets/chiens/memory_details_chiens.png",
+        "cardPattern": "assets/chiens/{index}.webp",
+        "cardCount": 23
+    },
+    "dinosaures": {
+        "label": "Dinosaures",
+        "thumbnail": "assets/dinosaures/memory_detail_dinosaures.png",
+        "cardPattern": "assets/dinosaures/{index}.jpg",
+        "cardCount": 10
+    },
+    "dinosauresAvecNom": {
+        "label": "Dinosaures avec nom",
+        "thumbnail": "assets/dinosauresAvecNom/memory_details_dinosaures_avec_nom.png",
+        "cardPattern": "assets/dinosauresAvecNom/{index}.jpg",
+        "cardCount": 10
+    },
+    "memory-legume": {
+        "label": "Légumes",
+        "thumbnail": "assets/memory-legume/memory_detail.png",
+        "cardPattern": "assets/memory-legume/{index}.svg",
+        "cardCount": 6
+    }
 }

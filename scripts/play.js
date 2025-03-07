@@ -1,66 +1,88 @@
-// paquet de cartes * 2
-// dos cartes : assets/question.svg
 
-// const optSelected = "animauxAnimes";
-// const imagePath = "assets/" + optSelected;
 
-// let img = document.createElement('img');
-// img.src = imagePath;
+// // Faire apparitre dynamiquement les cartes
+// // 1. Charger le JSON contenant les infos des cartes
+// // 2. Générer les cartes et les ajouter dans .memory-board
+// // 3. Afficher le recto et le verso des cartes avec des images
 
-// const imagesArr = [];
 
-// document.appendChild(img);
+// quand on clique sur une carte, elle se retourne (face de la carte)
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Tableau d'objets avec des données d'images (nom et chemin de l'image)
-    const imageData = [
-        { src: "assets/animauxAnimes/1.webp", title: "Image 1" },
-        { src: "assets/animauxAnimes/2.webp", title: "Image 2" },
-        { src: "assets/animauxAnimes/3.webp", title: "Image 3" },
-        { src: "assets/animauxAnimes/4.webp", title: "Image 4" },
-        { src: "assets/animauxAnimes/5.webp", title: "Image 5" },
-        { src: "assets/animauxAnimes/6.webp", title: "Image 6" },
-        { src: "assets/animauxAnimes/7.webp", title: "Image 7" },
-        { src: "assets/animauxAnimes/8.webp", title: "Image 8" },
-    ];
 
-    // Cibler la section où les cartes seront ajoutées
-    const section = document.getElementById('image-cards-section');
+// Fonction pour générer la liste des cartes
+function getCardImages(category) {
+    if (!category.cardPattern || !category.cardCount) return [];
 
-    // Fonction pour créer et afficher les cartes d'images
-    function displayImageCards(images) {
-        images.forEach(image => {
-            // Créer un élément div pour la carte
-            const card = document.createElement('div');
-            card.classList.add('card');
-            
-            // Créer un élément image
-            const img = document.createElement('img');
-            img.src = image.src;
-            img.alt = image.title;
-            
-            // Créer un élément titre pour la carte
-            const title = document.createElement('div');
-            title.classList.add('card-title');
-            title.textContent = image.title;
-
-            // Ajouter l'image et le titre à la carte
-            card.appendChild(img);
-            card.appendChild(title);
-
-            // Ajouter la carte à la section
-            section.appendChild(card);
-        });
+    const cards = [];
+    for (let i = 1; i <= category.cardCount; i++) {
+        cards.push(category.cardPattern.replace("{index}", i));
     }
+    return cards;
+}
 
-    // Appeler la fonction pour afficher les cartes
-    displayImageCards(imageData);
-});
+/* Fonction pour mélanger les cartes de manière aléatoire (algorithme de Fisher-Yates) */
+function shuffleCards(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
 
-
-
+/* Fonction d'initialisation */
 function init() {
+    const memoryBoard = document.querySelector(".memory-board");
+
+    // Charger le JSON
+    fetch("../data.json")
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("données chargées :", data);
+
+            const selectedCategory = data["memory-legume"];
+            if (!selectedCategory) {
+                console.log("Catégorie introuvable !");
+                return;
+            }
+
+            const cardImages = getCardImages(selectedCategory);
+            if (cardImages.length === 0) {
+                console.log("Aucune carte trouvée !");
+                return;
+            }
+
+            // Doubler les cartes pour avoir des paires
+            console.log("cartes générées :", cardImages); // Liste des images générées
+            let cardsDoubled = cardImages.concat(cardImages);
+            console.log("cartes doublées :", cardsDoubled); // Liste des cartes doublées
+
+
+            // Mélanger les cartes
+            shuffleCards(cardsDoubled);
+
+            // Générer les cartes HTML
+            cardsDoubled.forEach((imgSrc) => {
+                const card = document.createElement("div");
+                card.classList.add("card");
+
+                card.innerHTML = `<img src="${imgSrc}" class="front-face" alt="Carte">`;
+
+                // Ajouter un événement pour retourner la carte
+                card.addEventListener("click", function() {
+                    card.classList.toggle("flip"); // Applique ou retire la classe "flip"
+                });
+
+                memoryBoard.appendChild(card);
+            });
+            console.log("cartes mélangées:", cardsDoubled);
+
+
+        })
+        .catch((error) => console.error("Erreur de chargement JSON :", error));
 
 }
 
 window.onload = init;
+
+
+
+/*<img src="assets/question.svg" class="back-face" alt="Dos">*/
