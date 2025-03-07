@@ -60,7 +60,8 @@ function init() {
                 const card = document.createElement("div");
                 card.classList.add("card");
 
-                card.innerHTML = `<img src="${imgSrc}" class="front-face" alt="Carte">`;
+                card.innerHTML = `<img src="${imgSrc}" class="front-face" alt="Carte">
+                <img src="assets/question.svg" class="back-face" alt="Dos">`;
 
                 // Ajouter un événement pour retourner la carte
                 card.addEventListener("click", function() {
@@ -81,4 +82,3 @@ window.onload = init;
 
 
 
-/*<img src="assets/question.svg" class="back-face" alt="Dos">*/
