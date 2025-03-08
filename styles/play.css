@@ -1,111 +1,87 @@
-
-/* 
-#play {
-    display: flex;
-    flex-direction: column;  
-    justify-content: flex-start; 
-    align-items: center;  
-    padding: 20px;
-    width: 100%;
-} */
-
 .memory-board {
-    display: grid;
-    grid-template-columns: repeat(2, 150px); /* 2 colonnes de 150px de large pour smartphone */
-    gap: 10px; /* Espacement entre les cartes */
-    justify-content: center; /* Centrer les cartes horizontalement */
-    margin-top: 20px;
-    margin-bottom: 30px;
-    padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 150px); /* 2 colonnes de 150px de large pour smartphone */
+  gap: 30px; /* Espacement entre les cartes */
+  justify-content: center; /* Centrer les cartes horizontalement */
+  margin: 25px 0;
+  padding: 25px;
+
+  border: 3px dotted red;
 }
 
 
-
-/* Style pour chaque carte */
-.card {
-    display: flex;
-    justify-content: center;
-    width: 150px;
-    height: 150px;
-    border: 1px solid white;
-    border-radius: 10px; 
-    position: relative; /* Pour superposer les faces de la carte */
-    cursor: pointer;
-    transform-style: preserve-3d; /* pour permetrre rotation 3D */
-    transition: transform 0.6s; /* Animation de rotation */
-    overflow: hidden;/* Empêche le débordement des images */
+/* Conteneur de carte */
+.flip-card {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  border: 1px solid white;
+  border-radius: 10px;
 }
 
-/* Face avant (image de la carte) */
-.card .front-face {
-    width: 100%;
-    object-fit: contain; /* L'image remplit le conteneur sans déformation, avec découpe si nécessaire */
-    backface-visibility: hidden; /* Empêche d'afficher l'image du dos lors de la rotation */
+/* Faces avant et arrière de la carte */
+.flip-card-front,
+.flip-card-back
+ {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: visibility O.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  /* overflow: hidden;  Empêche le débordement des images */ 
+}
 
+/* Images du recto et du verso */
+.flip-card-front img,
+.flip-card-back img
+ {
+  width: 100%;  /* L'image prend toute la largeur de la carte */
+  height: 100%; /* L'image prend toute la hauteur de la carte */
+  object-fit: contain; /* Ajuste l'image sans la déformer ni la couper */
 }
 
 
-
-
-/* Face arrière (dos de la carte) */
-.card .back-face {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: #1e1e1e; Couleur de fond du dos de la carte
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    border-radius: 10px; /* Arrondir les coins */
-    backface-visibility: hidden; /* Empêche d'afficher l'image de la face avant lors de la rotation */
-}
-
-/* Rotation de la carte quand elle est retournée */
-.card.flip {
-    transform: rotateY(180deg); /* tourne de 180° sur l'axe Y */
-}
-
-/* Style du dos des cartes (pour un dos spécifique) */
-/* .card .back-face { */
-    /* background-image: url('assets/questions.svg');*/ /*Image pour le dos de la carte */
-    /* background-size: cover; */
-/* } */
-
-
-
-
+/* *****************************************************
+                MEDIA QUERIES
+***************************************************** */
 /* Responsive pour les petits écrans */
 @media (max-width: 750px) {
-    .memory-board {
-        grid-template-columns: repeat(2, 150px); /* 2 cartes par ligne sur petits écrans */
-        gap: 10px;
-    }
+  .memory-board {
+    grid-template-columns: repeat(2, 150px);
+    /* 2 cartes par ligne sur petits écrans */
+    gap: 10px;
+  }
 
-    .card {
-        width: 100%;
-        height: 150px; /* Maintenir une hauteur constante pour les petites cartes */
-    }
+  .flip-card {
+    width: 100%;
+    height: 150px;
+    /* Maintenir une hauteur constante pour les petites cartes */
+  }
 }
 
 /* Tablettes */
 @media (min-width: 750px) and (max-width: 970px) {
-    .memory-board {
-        grid-template-columns: repeat(3, 150px); /* 3 cartes par ligne sur tablettes */
-    }
+  .memory-board {
+    grid-template-columns: repeat(3, 150px);
+    /* 3 cartes par ligne sur tablettes */
+  }
 }
 
 /* Petits à moyens écrans */
 @media (min-width: 970px) and (max-width: 1170px) {
-    .memory-board {
-        grid-template-columns: repeat(4, 150px); /* 4 cartes par ligne sur petits à moyens écrans */
-    }
+  .memory-board {
+    grid-template-columns: repeat(4, 150px);
+    /* 4 cartes par ligne sur petits à moyens écrans */
+  }
 }
 
 /* Grands écrans */
 @media (min-width: 1170px) {
-    .memory-board {
-        grid-template-columns: repeat(4, 150px); /* 4 cartes par ligne sur grands écrans */
-    }
+  .memory-board {
+    grid-template-columns: repeat(4, 150px);
+    /* 4 cartes par ligne sur grands écrans */
+  }
 }
