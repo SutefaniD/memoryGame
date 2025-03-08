@@ -10,7 +10,8 @@ function getCardImages(gameCategory) {
     return cards;
 }
 
-/* Fonction pour mélanger les cartes de manière aléatoire (algorithme de Fisher-Yates) */
+/* Fonction pour mélanger les cartes de manière aléatoire 
+(algorithme de Fisher-Yates) */
 function shuffleCards(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -37,23 +38,116 @@ function createCardElement(frontImage, backImage) {
     frontFace.style.visibility = "hidden";
     backFace.style.visibility = "visible";
 
-    // ajouter un événement pour retourner la carte
-    card.addEventListener("click", function (event) {
-        if (frontFace.style.visibility === "hidden") {
-            frontFace.style.visibility = "visible"; // Afficher la face avant
-            backFace.style.visibility = "hidden";   // Cacher la face arrière
-        } else {
-            frontFace.style.visibility = "hidden";  // Cacher la face avant
-            backFace.style.visibility = "visible";  // Afficher la face arrière
-        }
-    });
-
     // ajouter les faces au conteneur de la carte
     card.appendChild(frontFace);
     card.appendChild(backFace);
     
 
     return card;
+}
+
+/* JEU: 
+Retourner une paire de cartes:
+- nombre de coups minimum = nb de cartes / 2
+(ex: jeu 12 cartes - 6 coups min)
+nb cartes restantes = nb cartes // 2
+
+- tant qu'il y a des cartes à retourner: 
+        - retourner une carte
+            - elle est bloquée tant qu'une 2eme carte n'est pas retournée
+        - retourner une 2eme carte
+        - compteur de coups: +1
+        
+        - si les 2 cartes sont identiques 
+            - les cartes restent retournées (face)
+            -elles sont bloquées (on ne peut plus cliquer dessus)
+            - nb cartes restantes -= 1
+        - sinon (cartes différentes):
+            - les cartes sont retournées (côté dos)
+- on recommence tant qu'il reste des cartes à retourner
+*/
+function playGame(cardCount) {
+    let remainingPairs = cardCount
+    console.log("remaining pairs = ", remainingPairs);
+    let movesNb = 0;
+    let firstCard = null;
+    let secondCard = null;
+    let firstCardImg = null;
+    let secondCardImg = null;
+    let lockBoard = false; // empêche clics pendant vérif
+
+    const cards = document.querySelectorAll('.flip-card');
+        
+    cards.forEach(card => {
+        card.addEventListener("click", function () {
+            if (lockBoard || this === firstCardImg || this.classList.contains("matched")) {
+                return;
+            } // Bloque les clics inutiles
+
+            // sélectionne les faces avant et arrière de la carte retournér
+            let frontFace = this.querySelector('.flip-card-front');
+            let backFace = this.querySelector('.flip-card-back')
+    
+            // retourne la carte
+            frontFace.style.visibility = "visible";
+            backFace.style.visibility = "hidden";   
+            
+            if(!firstCard) {
+                // 1ere carte retournée
+                firstCard = this.querySelector('img').src;
+                firstCardImg = this;
+            } else {
+                // 2e carte retournée
+                secondCard = this.querySelector('img').src;
+                secondCardImg = this;
+                movesNb++;
+                document.getElementById('count').innerText = movesNb;
+                console.log("nb coups joués: ", movesNb);
+
+                lockBoard = true; // bloque les clics le temps de vérifier
+
+                if (firstCard === secondCard) {
+                    // cartes identiques : restent visibles
+                    firstCardImg.classList.add("matched");
+                    secondCardImg.classList.add("matched");
+                    remainingPairs--;
+                    console.log("nb de paires restantes: ", remainingPairs);
+                    resetSelection(); // réinitialiser pour prochaine paire
+                } else {
+                    // cartes différentes : les retourner (après un délai)
+                    setTimeout(() => {
+                        firstCardImg.querySelector('.flip-card-front').style.visibility = "hidden";
+                        firstCardImg.querySelector('.flip-card-back').style.visibility = "visible";
+
+                        secondCardImg.querySelector('.flip-card-front').style.visibility = "hidden";
+                        secondCardImg.querySelector('.flip-card-back').style.visibility = "visible";
+
+                        resetSelection();
+                    }, 1000);    
+                }
+
+                // vérifier la fin de jeu
+                if(remainingPairs === 0) {
+                    setTimeout(() => alert(`Partie gagnée en ${movesNb} coups`), 500);
+                }
+            }
+        });
+    });
+
+    function resetSelection() {
+        firstCard = null;
+        secondCard = null;
+        firstCardImg = null;
+        secondCardImg = null;
+        lockBoard = false;
+    }
+}
+
+/* Fonction pour rejouer */
+function resetGame() {
+    document.querySelectorAll('.flip-card-front').forEach(front => front.style.visibility = "hidden");
+    document.querySelectorAll('.flip-card-back').forEach(back => back.style.visibility = "visible");
+    init(); // Réinitialise la logique du jeu
 }
 
 /* *****************************************************
@@ -109,12 +203,15 @@ function init() {
             // TODO : récupérer la catégorie sélectionnée dans le profil
             // TODO : récupérer le nb de cartes dans le profil
             const selectedCategory = "memory-legume"; // pour tester
+            const cardNumber = 6; // pour tester
+
             if (!selectedCategory) {
                 console.log("Catégorie introuvable !");
                 return;
             }
 
             setUpGame(data, selectedCategory);
+            playGame(cardNumber);
         });
 }
 
