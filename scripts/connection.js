@@ -7,9 +7,20 @@
 /* récupérer le tableau d'utilisateurs du localStorage */
 
 function getUsers() {
-    return localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : [];
+    let users = [];
+
+    for(let i = 0; i<localStorage.length;i++) {
+        let key = localStorage.key(i);
+
+        if(key.startsWith('user')) {
+            let user = JSON.parse(localStorage.getItem(key));
+            users.push(user);
+        }
+    }
+    return users;
 }
 
+/* Fonction de connexion */
 function connectUser(event) {
 
     // empêcher la soumission du formulaire
@@ -21,35 +32,40 @@ function connectUser(event) {
     // récupérer les utilisateaurs enregistrés dans le localStorage
     let usersArray =  getUsers();
 
-    let userFound = false;
+    let userFound = null;
 
     // vérifier si  l'email et le mot de passe correspondent
     for (let i = 0; i < usersArray.length; i++) {
         if ((usersArray[i].userMail === userMail) && (usersArray[i].userPwd === userPwd)) {
-            userFound = true;
-            // afficher l'alerte
-            alert(`L'email ${userMail} est connecté`);
-
-            // après un délai, rediriger vers la page profil
-            setTimeout(function () {
-                window.location.href = "profile.html";
-            }, 1000);
-
+            userFound = usersArray[i];
             break;
         }
     }
 
-    // si ça ne correspond pas, alerte
-    if (!userFound) {
+    if(userFound) {
+        // stocker l'utilisateur connecté dans le localStorage, clé 'userSession'
+        localStorage.setItem('userSession', JSON.stringify(userFound));
+
+        // afficher l'alerte
+        alert(`L'email ${userMail} est connecté`);
+
+        // après un délai, rediriger vers la page profil
+        setTimeout(function () {
+            window.location.href = "profile.html";
+        }, 500);
+
+    } else {
         alert("Erreur, veuillez saisir les informations correctement");
     }
+
+    
 
 }
 
 
 
 function init() {
-    document.getElementById('submit').addEventListener('click', connectUser);
+    document.getElementById('submitForm').addEventListener('submit', connectUser);
 
 }
 

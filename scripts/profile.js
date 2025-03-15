@@ -1,5 +1,33 @@
-// selection du memory -> affichage image
-function imageDisplay() {
+/************************************************************
+        Récupérer et afficher les informations de profil
+************************************************************/
+function displayProfile() {
+
+    // Récupérer l'utilisateur connecté depuis le localStorage
+let userSession = localStorage.getItem('userSession');
+console.log(userSession);
+
+// Vérifier si un utilisateur est bien connecté
+if (userSession) {
+    let user = JSON.parse(userSession); // convertir la chaîne JSON en objet JS
+    
+    // Afficher ses informations dans le formulaire
+    document.getElementById('name').value = user.userName;
+    document.getElementById('email').value = user.userMail;
+} else {
+    // si pas d'utilisateur connecté
+    alert("Vous n'êtes pas connecté");
+    document.getElementById('name').value = "";
+    document.getElementById('email').value = "";
+}
+
+}
+
+
+/************************************************************
+    Afficher l'image correspondant au melory sélectionné
+************************************************************/
+function displayImage() {
     const optSelected = document.getElementById('memory-selection');
     const imgDisplay = document.getElementById('memory-img');
     const selectedValue = optSelected.value;
@@ -52,7 +80,8 @@ function imageDisplay() {
 
 
 function init() {
-    document.getElementById('memory-selection').addEventListener('change', imageDisplay)
+    displayProfile();
+    document.getElementById('memory-selection').addEventListener('change', displayImage)
 
     //document.getElementById('registerBtn').addEventListener('click', registerOptions);
 

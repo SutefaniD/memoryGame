@@ -261,7 +261,7 @@ function validateForm() {
         submitBtn.style.backgroundColor = '';
 
     } else {
-        console.log("erreur: nom non valide")
+        console.log("erreur")
         submitBtn.disabled = true;   // Désactive le bouton
 
     }
@@ -300,18 +300,18 @@ function registerUser(event) {
         return; // utilisateur ne peut pas être ajouté s'il existe déjà
     }
 
-    // Récupérer la liste des utilisateurs existants du localStorage
-    let usersArray = localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : [];  // load any pre-existing items in localStorage; if there aren't any, create an empty array
+    // compter les utilisateurs
+    let userCount = 1;
+    while (localStorage.getItem(`user${userCount}`)) {
+        userCount++;
+    }
 
-    // Ajouter le nouvel utilisateur au tableau
-    usersArray.push(newUser);
-
-    // Sérialiser le tableau des utilisateurs en JSON et l'enregistrer dans le localStorage
-    localStorage.setItem('users', JSON.stringify(usersArray));
+    // stocker les utilisateurs
+    localStorage.setItem(`user${userCount}`, JSON.stringify(newUser));
 
     // Affichage console
-    //console.log('Nouvel utilisateur enregistré:', newUser);
-    //console.log('Liste des utilisateurs:', usersArray);
+    console.log('Nouvel utilisateur enregistré:', newUser);
+    console.log('Liste des utilisateurs:', `user${userCount}`);
 
     // rediriger vers la page de connexion après l'enregistrement
     window.location.href = "connection.html";
@@ -369,9 +369,9 @@ function init() {
         recheckPwd(event);  // Vérification que les mots de passe correspondent
         validateForm();     // Vérification globale du formulaire
     });
-    document.getElementById('submit-btn').addEventListener('click', registerUser);
+    document.getElementById('registerForm').addEventListener('submit', registerUser);
 
-   
+
 }
 
 window.onload = init;

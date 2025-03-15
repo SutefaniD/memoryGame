@@ -41,7 +41,3 @@ function findImagePath(selValue) {
 
     console.log('imagePath:', imgDisplay.src)
 }
-
-
-
-}

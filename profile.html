@@ -32,8 +32,7 @@
                 </li>
 
             </ul>
-            </div>
-            </div>
+            <div class="hamburger" id="hamburger"></div>
         </nav>
     </header>
     <main>
@@ -43,36 +42,41 @@
             <img id="profile-img" src="assets/question.svg" alt="photo de profil">
         </section>
 
-        <section id="userID">
+        <form id="profilForm">
+            <label for="name">Nom d'utilisateur</label>
+            <input type="text" id="name" value="" readonly>
 
-        </section>
+            <label for="email">Email</label>
+            <input type="text" id="email" value="" readonly>
 
-        <section id="memoryOptions">
-            <form action="">
-                <!-- Choix du Memory -->
-                 <label for="memory-selection">Choix du Memory</label>
-                    <select name="memory" id="memory-selection">
-                        <option value="alphabet-scrabble">Alphabet</option>
-                        <option value="animaux">Animaux</option>
-                        <option value="animauxAnimes" selected>Animaux animés</option>
-                        <option value="animauxDomestiques">Animaux domestiques</option>
-                        <option value="chiens">Chiens</option>
-                        <option value="dinosaures">Dinosaures</option>
-                        <option value="dinosauresAvecNom">Dinosaures avec nom</option>
-                        <option value="memory-legume">Légumes</option>
-                        
-                    </select>
+            <section id="memoryOptions">
+                <form action="">
+                    <!-- Choix du Memory -->
+                     <label for="memory-selection">Choix du Memory</label>
+                        <select name="memory" id="memory-selection">
+                            <option value="alphabet-scrabble">Alphabet</option>
+                            <option value="animaux">Animaux</option>
+                            <option value="animauxAnimes" selected>Animaux animés</option>
+                            <option value="animauxDomestiques">Animaux domestiques</option>
+                            <option value="chiens">Chiens</option>
+                            <option value="dinosaures">Dinosaures</option>
+                            <option value="dinosauresAvecNom">Dinosaures avec nom</option>
+                            <option value="memory-legume">Légumes</option>
+                            
+                        </select>
+    
+                        <section id="img-box"><img id="memory-img" src="assets/animauxAnimes/memory_detail_animaux_animes.png"></section>
+    
+                    <!-- Taille du Memory -->
 
-                    <section id="img-box"><img id="memory-img" src="assets/animauxAnimes/memory_detail_animaux_animes.png"></section>
-
-                <!-- Taille du Memory -->
-
-                <!-- Bouton -->
+                    <!-- Bouton -->
                  <input type="submit" id="registerBtn" value="Enregistrez Option">
-            </form>
+    
+
+        </form>
 
 
-        </section>
+
 
         <section id="pastScores">
             <h2>Derniers Scores</h2>

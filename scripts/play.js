@@ -46,26 +46,50 @@ function createCardElement(frontImage, backImage) {
     return card;
 }
 
-/* JEU: 
-Retourner une paire de cartes:
-- nombre de coups minimum = nb de cartes / 2
-(ex: jeu 12 cartes - 6 coups min)
-nb cartes restantes = nb cartes // 2
+/* *****************************************************
+        Fonction pour générer le jeu de cartes
+***************************************************** */
+// TODO: nombre de cartes dépend du choix dans profil => à récupérer
+// TODO: catégorie du jeu à récupérer (choix dans profil)
+function setUpGame(data, selectedCategory) {
+    const memoryBoard = document.querySelector('.memory-board');
+    const gameCategory = data[selectedCategory];
+    // const cardCount = gameCategory.cardCount;
+    // const cardPattern = gameCategory.cardPattern;
+    const cardBackImage = "assets/question.svg";
 
-- tant qu'il y a des cartes à retourner: 
-        - retourner une carte
-            - elle est bloquée tant qu'une 2eme carte n'est pas retournée
-        - retourner une 2eme carte
-        - compteur de coups: +1
-        
-        - si les 2 cartes sont identiques 
-            - les cartes restent retournées (face)
-            -elles sont bloquées (on ne peut plus cliquer dessus)
-            - nb cartes restantes -= 1
-        - sinon (cartes différentes):
-            - les cartes sont retournées (côté dos)
-- on recommence tant qu'il reste des cartes à retourner
-*/
+    // réinitiliser le plateau
+    memoryBoard.innerHTML = "";
+
+    // récupérer les images des cartes
+    let cardImages = getCardImages(gameCategory);
+    if (cardImages.length === 0) {
+        console.log("Aucune carte trouvée !");
+        return;
+    }
+
+    // Doubler les cartes pour avoir des paires
+    console.log("cartes générées :", cardImages); // Liste des images générées
+    let cardsDoubled = cardImages.concat(cardImages);
+    console.log("cartes doublées :", cardsDoubled); // Liste des cartes doublées
+
+    // Mélanger les cartes
+    shuffleCards(cardsDoubled);
+    console.log("cartes mélangées: ", cardsDoubled);
+
+    // Créer les cartes HTML et les ajouter au plateau de jeu
+    cardsDoubled.forEach((frontImage) => {
+        const cardElement = createCardElement(frontImage, cardBackImage);
+        memoryBoard.appendChild(cardElement);
+    });
+
+}
+
+/* *****************************************************
+        Fonction pour jouer une partie
+***************************************************** */
+// TODO: relancer le jeu en appuyant sur la barre d'espace
+// "relancer le jeu" = ?nouvelle partie ? ou ?pause ?
 function playGame(cardCount) {
     let remainingPairs = cardCount
     console.log("remaining pairs = ", remainingPairs);
@@ -150,44 +174,6 @@ function resetGame() {
     init(); // Réinitialise la logique du jeu
 }
 
-/* *****************************************************
-        Fonction pour générer le jeu de cartes
-***************************************************** */
-// TODO: nombre de cartes dépend du choix dans profil => à récupérer
-// TODO: catégorie du jeu à récupérer (choix dans profil)
-function setUpGame(data, selectedCategory) {
-    const memoryBoard = document.querySelector('.memory-board');
-    const gameCategory = data[selectedCategory];
-    // const cardCount = gameCategory.cardCount;
-    // const cardPattern = gameCategory.cardPattern;
-    const cardBackImage = "assets/question.svg";
-
-    // réinitiliser le plateau
-    memoryBoard.innerHTML = "";
-
-    // récupérer les images des cartes
-    let cardImages = getCardImages(gameCategory);
-    if (cardImages.length === 0) {
-        console.log("Aucune carte trouvée !");
-        return;
-    }
-
-    // Doubler les cartes pour avoir des paires
-    console.log("cartes générées :", cardImages); // Liste des images générées
-    let cardsDoubled = cardImages.concat(cardImages);
-    console.log("cartes doublées :", cardsDoubled); // Liste des cartes doublées
-
-    // Mélanger les cartes
-    shuffleCards(cardsDoubled);
-    console.log("cartes mélangées: ", cardsDoubled);
-
-    // Créer les cartes HTML et les ajouter au plateau de jeu
-    cardsDoubled.forEach((frontImage) => {
-        const cardElement = createCardElement(frontImage, cardBackImage);
-        memoryBoard.appendChild(cardElement);
-    });
-
-}
 
 /* *****************************************************
                   Fonction d'initialisation
